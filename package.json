@@ -6,6 +6,14 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SOMONSOUM/moc-oauth-client.git"
+  },
+  "homepage": "https://github.com/SOMONSOUM/moc-oauth-client",
+  "bugs": {
+    "url": "https://github.com/SOMONSOUM/moc-oauth-client/issues"
+  },
   "files": [
     "dist"
   ],
