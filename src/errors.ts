@@ -1,18 +1,15 @@
 import { AxiosError } from "axios";
 import { OAuthError } from "./types";
 
-export function handleError(error: unknown): never {
+export function parseError(error: unknown): OAuthError["error"] {
   const err = error as AxiosError<OAuthError>;
 
-  if (err.response?.data) {
-    throw err.response.data;
+  if (err.response?.data?.error) {
+    return err.response.data.error;
   }
 
-  throw {
-    success: false,
-    error: {
-      code: "UNKNOWN_ERROR",
-      message: err.message,
-    },
+  return {
+    code: "UNKNOWN_ERROR",
+    message: err.message ?? "Unknown error",
   };
 }

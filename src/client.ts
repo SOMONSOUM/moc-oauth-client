@@ -1,27 +1,27 @@
 import { http } from "./http";
 import { config } from "./config";
 import {
-  OAuthSuccess,
   AuthorizeResponse,
   ValidateTokenResponse,
   CurrentUser,
+  OAuthResult,
 } from "./types";
-import { handleError } from "./errors";
+import { parseError } from "./errors";
 import { API_ENDPOINTS } from "./api-endpoint";
 
 /**
- * MOCOAuthClient is a client library for interacting with the Moc OAuth API.
+ * MOCOAuthClient is a client library for interacting with the MOC OAuth API.
  * It provides methods for authorizing clients, validating tokens, refreshing tokens,
  * and retrieving the current user's information.
  */
 export class MOCOAuthClient {
   /**
-   * Authorize a client using the OAuth API.
+   * Authorizes a client using the MOC OAuth API.
    * @returns A promise resolving to an object containing the response data.
-   * The response data will contain a redirectUri which can be used to redirect the user to the Moc OAuth API's authorization page.
-   * @throws An error if the authorization request fails.
+   * The response data will contain the authorization URL for the client.
+   * @throws An error if the request to authorize the client fails.
    */
-  async authorizeClient(): Promise<OAuthSuccess<AuthorizeResponse>> {
+  async authorizeClient(): Promise<OAuthResult<AuthorizeResponse>> {
     try {
       const res = await http.post(API_ENDPOINTS.AUTHORIZE, {
         clientId: config.clientId,
@@ -29,44 +29,54 @@ export class MOCOAuthClient {
         redirectUri: config.redirectUri,
       });
 
-      return res.data;
+      return {
+        data: res.data.data,
+        error: null,
+      };
     } catch (e) {
-      handleError(e);
+      return {
+        data: null,
+        error: parseError(e),
+      };
     }
   }
 
   /**
-   * Validates a JWT token using the Moc OAuth API.
+   * Validates a JWT token using the MOC OAuth API.
    * @param accessToken The JWT token to validate.
    * @returns A promise resolving to an object containing the response data.
    * The response data will contain a boolean indicating whether the token is valid or not,
    * an access token, and a refresh token.
-   * @throws An error if the validation request fails.
+   * @throws An error if the request to validate the token fails.
    */
   async validateToken(
     accessToken: string,
-  ): Promise<OAuthSuccess<ValidateTokenResponse>> {
+  ): Promise<OAuthResult<ValidateTokenResponse>> {
     try {
       const res = await http.post(API_ENDPOINTS.VALIDATE_TOKEN, {
         accessToken,
       });
 
-      return res.data;
+      return {
+        data: res.data.data,
+        error: null,
+      };
     } catch (e) {
-      handleError(e);
+      return {
+        data: null,
+        error: parseError(e),
+      };
     }
   }
 
   /**
-   * Retrieves the current user's information using the Moc OAuth API.
+   * Retrieves the current user's information using the MOC OAuth API.
    * @param accessToken The JWT token to use for authentication.
    * @returns A promise resolving to an object containing the response data.
    * The response data will contain the current user's email, first name, and last name.
-   * @throws An error if the request to retrieve the current user's information fails.
+   * @throws An error if the request to retrieve the user's information fails.
    */
-  async getCurrentUser(
-    accessToken: string,
-  ): Promise<OAuthSuccess<CurrentUser>> {
+  async getCurrentUser(accessToken: string): Promise<OAuthResult<CurrentUser>> {
     try {
       const res = await http.get(API_ENDPOINTS.USER, {
         headers: {
@@ -74,31 +84,42 @@ export class MOCOAuthClient {
         },
       });
 
-      return res.data;
+      return {
+        data: res.data.data,
+        error: null,
+      };
     } catch (e) {
-      handleError(e);
+      return {
+        data: null,
+        error: parseError(e),
+      };
     }
   }
 
   /**
-   * Refreshes a JWT token using the Moc OAuth API.
-   * @param refreshToken The refresh token to use for authentication.
+   * Refreshes an access token using the MOC OAuth API.
+   * @param refreshToken The JWT token to use for authentication.
    * @returns A promise resolving to an object containing the response data.
-   * The response data will contain a boolean indicating whether the token is valid or not,
-   * an access token, and a refresh token.
-   * @throws An error if the request to refresh the token fails.
+   * The response data will contain the new access token and refresh token.
+   * @throws An error if the request to refresh the access token fails.
    */
   async refreshToken(
     refreshToken: string,
-  ): Promise<OAuthSuccess<ValidateTokenResponse>> {
+  ): Promise<OAuthResult<ValidateTokenResponse>> {
     try {
       const res = await http.post(API_ENDPOINTS.REFRESH_TOKEN, {
         refreshToken,
       });
 
-      return res.data;
+      return {
+        data: res.data.data,
+        error: null,
+      };
     } catch (e) {
-      handleError(e);
+      return {
+        data: null,
+        error: parseError(e),
+      };
     }
   }
 }

@@ -1,8 +1,6 @@
-export interface OAuthSuccess<T> {
-  statusCode: number;
-  success: true;
-  message: string;
-  data: T;
+export interface OAuthResult<T> {
+  data: T | null;
+  error: OAuthError["error"] | null;
 }
 
 export interface OAuthError {
