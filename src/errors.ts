@@ -13,9 +13,6 @@ export function handleError(error: unknown): never {
     error: {
       code: "UNKNOWN_ERROR",
       message: err.message,
-      timestamp: new Date().toISOString(),
-      path: "",
-      requestId: "",
     },
   };
 }

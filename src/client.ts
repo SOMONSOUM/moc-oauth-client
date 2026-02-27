@@ -10,11 +10,11 @@ import { handleError } from "./errors";
 import { API_ENDPOINTS } from "./api-endpoint";
 
 /**
- * MocOAuthClient is a client library for interacting with the Moc OAuth API.
+ * MOCOAuthClient is a client library for interacting with the Moc OAuth API.
  * It provides methods for authorizing clients, validating tokens, refreshing tokens,
  * and retrieving the current user's information.
  */
-export class MocOAuthClient {
+export class MOCOAuthClient {
   /**
    * Authorize a client using the OAuth API.
    * @returns A promise resolving to an object containing the response data.
