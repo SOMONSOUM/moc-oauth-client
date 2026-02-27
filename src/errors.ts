@@ -1,11 +1,14 @@
 import { AxiosError } from "axios";
 import { OAuthError } from "./types";
 
-export function parseError(error: unknown): OAuthError["error"] {
+export function handleError(error: unknown): OAuthError["error"] {
   const err = error as AxiosError<OAuthError>;
 
   if (err.response?.data?.error) {
-    return err.response.data.error;
+    return {
+      code: err.response.data.error.code,
+      message: err.response.data.error.message,
+    };
   }
 
   return {

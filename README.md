@@ -30,39 +30,36 @@ touch .env
 Add the following environment variables to your .env file:
 
 ```bash
-BASE_URL=https://identity.moc.gov.kh
+BASE_URL=https://api-dev-dentity.moc.gov.kh
 CLIENT_ID=your_client_id
 CLIENT_SECRET=your_client_secret
-REDIRECT_URI=http://localhost:3000/callback
+REDIRECT_URI=https://example.com/callback
 ```
 
 ## 🚀 Quick Start
 
 ```typescript
-import { MocOAuthClient } from "moc-oauth-client";
+import { MOCOAuthClient } from "moc-oauth-client";
 
-const oauth = new MocOAuthClient();
-
-// Authorize the client
-const authorizationUrl = await oauth.authorize();
+const oauth = new MOCOAuthClient();
 ```
 
 ## 🔐 Authorize Client
 
 ```typescript
-const response = await oauth.authorizeClient();
+const result = await oauth.authorizeClient();
 
-console.log(response.data.redirectUri);
+console.log(result);
 ```
 
 ✅ Success Response
 
 ```json
 {
-  "success": true,
   "data": {
     "redirectUri": "http://localhost:3000/login?loginToken=..."
-  }
+  },
+  "error": null
 }
 ```
 
@@ -70,15 +67,20 @@ console.log(response.data.redirectUri);
 
 ```typescript
 const result = await oauth.validateToken(accessToken);
+
+console.log(result);
 ```
 
 ✅ Success Response
 
 ```json
 {
-  "isValid": true,
-  "accessToken": "...",
-  "refreshToken": "..."
+  "data": {
+    "isValid": true,
+    "accessToken": "...",
+    "refreshToken": "..."
+  },
+  "error": null
 }
 ```
 
@@ -86,18 +88,21 @@ const result = await oauth.validateToken(accessToken);
 Retrieve authenticated user information.
 
 ```typescript
-const user = await oauth.getCurrentUser(accessToken);
+const result = await oauth.getCurrentUser(accessToken);
 
-console.log(user.data);
+console.log(result);
 ```
 
 ✅ Success Response
 
 ```json
 {
-  "email": "user@email.com",
-  "firstName": "Sok",
-  "lastName": "Dara"
+  "data": {
+    "email": "user@email.com",
+    "firstName": "Sok",
+    "lastName": "Dara"
+  },
+  "error": null
 }
 ```
 
@@ -105,15 +110,20 @@ console.log(user.data);
 Generate a new access token using refresh token.
 
 ```typescript
-const tokens = await oauth.refreshToken(refreshToken);
+const result = await oauth.refreshToken(refreshToken);
+
+console.log(result);
 ```
 
 ✅ Success Response
 
 ```json
 {
-  "accessToken": "...",
-  "refreshToken": "..."
+  "data": {
+    "accessToken": "...",
+    "refreshToken": "..."
+  },
+  "error": null
 }
 ```
 
@@ -123,7 +133,6 @@ All API errors follow a standardized format:
 
 ```json
 {
-  "success": false,
   "error": {
     "code": "UNAUTHORIZED",
     "message": "Invalid token"

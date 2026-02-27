@@ -6,7 +6,7 @@ import {
   CurrentUser,
   OAuthResult,
 } from "./types";
-import { parseError } from "./errors";
+import { handleError } from "./errors";
 import { API_ENDPOINTS } from "./api-endpoint";
 
 /**
@@ -36,7 +36,7 @@ export class MOCOAuthClient {
     } catch (e) {
       return {
         data: null,
-        error: parseError(e),
+        error: handleError(e),
       };
     }
   }
@@ -64,7 +64,7 @@ export class MOCOAuthClient {
     } catch (e) {
       return {
         data: null,
-        error: parseError(e),
+        error: handleError(e),
       };
     }
   }
@@ -91,7 +91,7 @@ export class MOCOAuthClient {
     } catch (e) {
       return {
         data: null,
-        error: parseError(e),
+        error: handleError(e),
       };
     }
   }
@@ -118,7 +118,7 @@ export class MOCOAuthClient {
     } catch (e) {
       return {
         data: null,
-        error: parseError(e),
+        error: handleError(e),
       };
     }
   }
