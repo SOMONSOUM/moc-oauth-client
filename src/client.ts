@@ -9,12 +9,23 @@ import {
 import { handleError } from "./errors";
 import { API_ENDPOINTS } from "./api-endpoint";
 
+interface MOCOAuthClientBase {
+  authorizeClient(): Promise<OAuthResult<AuthorizeResponse>>;
+  validateToken(
+    accessToken: string,
+  ): Promise<OAuthResult<ValidateTokenResponse>>;
+  getCurrentUser(accessToken: string): Promise<OAuthResult<CurrentUser>>;
+  refreshToken(
+    refreshToken: string,
+  ): Promise<OAuthResult<ValidateTokenResponse>>;
+}
+
 /**
  * MOCOAuthClient is a client library for interacting with the MOC OAuth API.
  * It provides methods for authorizing clients, validating tokens, refreshing tokens,
  * and retrieving the current user's information.
  */
-export class MOCOAuthClient {
+export class MOCOAuthClient implements MOCOAuthClientBase {
   /**
    * Authorizes a client using the MOC OAuth API.
    * @returns A promise resolving to an object containing the response data.
@@ -23,7 +34,7 @@ export class MOCOAuthClient {
    */
   async authorizeClient(): Promise<OAuthResult<AuthorizeResponse>> {
     try {
-      const res = await http.post(API_ENDPOINTS.AUTHORIZE, {
+      const res = await http.post(API_ENDPOINTS.LOGIN_TOKEN, {
         clientId: config.clientId,
         clientSecret: config.clientSecret,
         redirectUri: config.redirectUri,

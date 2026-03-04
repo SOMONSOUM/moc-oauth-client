@@ -4,6 +4,7 @@ export interface OAuthResult<T> {
 }
 
 export interface OAuthError {
+  status: number;
   success: false;
   error: {
     code: string;

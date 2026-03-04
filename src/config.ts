@@ -9,6 +9,13 @@ export const config = {
   redirectUri: process.env.REDIRECT_URI!,
 };
 
-if (!config.baseUrl || !config.clientId) {
-  throw new Error("Missing OAuth environment variables");
+if (
+  !config.baseUrl ||
+  !config.clientId ||
+  !config.clientSecret ||
+  !config.redirectUri
+) {
+  throw new Error(
+    "ENV variables BASE_URL, CLIENT_SECRET, REDIRECT_URI and CLIENT_ID are required",
+  );
 }

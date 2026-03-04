@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
-  AUTHORIZE: "/api/v1/oauth/authorize",
-  USER: "/api/v1/oauth/get-user",
-  REFRESH_TOKEN: "/api/v1/oauth/refresh-token",
-  VALIDATE_TOKEN: "/api/v1/oauth/validate-jwt-token",
+  LOGIN_TOKEN: "/api/v1/service-account/login-token",
+  USER: "/api/v1/service-account/profile-user",
+  REFRESH_TOKEN: "/api/v1/service-account/refresh-token",
+  VALIDATE_TOKEN: "/api/v1/service-account/validate-jwt-token",
 };
