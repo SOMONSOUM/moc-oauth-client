@@ -1,9 +1,9 @@
-export interface OAuthResult<T> {
+export interface ApiResponse<T> {
   data: T | null;
-  error: OAuthError["error"] | null;
+  error: ApiErrorResponse["error"] | null;
 }
 
-export interface OAuthError {
+export interface ApiErrorResponse {
   status: number;
   success: false;
   error: {
@@ -14,18 +14,26 @@ export interface OAuthError {
 
 /* ---------- RESPONSES ---------- */
 
-export interface AuthorizeResponse {
+export interface LoginTokenResponse {
   redirectUri: string;
 }
 
-export interface ValidateTokenResponse {
+export interface ValidateJwtResponse {
   isValid: boolean;
+  payload: {
+    accessToken: string;
+    refreshToken: string;
+  };
+}
+
+export interface RefreshTokenResponse {
   accessToken: string;
   refreshToken: string;
 }
 
-export interface CurrentUser {
+export interface LookupUserProfileResponse {
+  id: number;
   email: string;
-  firstName: string;
-  lastName: string;
+  username?: string;
+  isActive: boolean;
 }

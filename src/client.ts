@@ -1,23 +1,26 @@
 import { http } from "./http";
 import { config } from "./config";
 import {
-  AuthorizeResponse,
-  ValidateTokenResponse,
-  CurrentUser,
-  OAuthResult,
+  LoginTokenResponse,
+  ValidateJwtResponse,
+  LookupUserProfileResponse,
+  ApiResponse,
+  RefreshTokenResponse,
 } from "./types";
 import { handleError } from "./errors";
 import { API_ENDPOINTS } from "./api-endpoint";
 
 interface MOCOAuthClientBase {
-  authorizeClient(): Promise<OAuthResult<AuthorizeResponse>>;
-  validateToken(
+  getLoginToken(): Promise<ApiResponse<LoginTokenResponse>>;
+  validateJwtToken(
     accessToken: string,
-  ): Promise<OAuthResult<ValidateTokenResponse>>;
-  getCurrentUser(accessToken: string): Promise<OAuthResult<CurrentUser>>;
+  ): Promise<ApiResponse<ValidateJwtResponse>>;
+  lookupUserProfile(
+    accessToken: string,
+  ): Promise<ApiResponse<LookupUserProfileResponse>>;
   refreshToken(
     refreshToken: string,
-  ): Promise<OAuthResult<ValidateTokenResponse>>;
+  ): Promise<ApiResponse<RefreshTokenResponse>>;
 }
 
 /**
@@ -32,9 +35,9 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
    * The response data will contain the authorization URL for the client.
    * @throws An error if the request to authorize the client fails.
    */
-  async authorizeClient(): Promise<OAuthResult<AuthorizeResponse>> {
+  async getLoginToken(): Promise<ApiResponse<LoginTokenResponse>> {
     try {
-      const res = await http.post(API_ENDPOINTS.LOGIN_TOKEN, {
+      const res = await http.post(API_ENDPOINTS.GET_LOGIN_TOKEN, {
         clientId: config.clientId,
         clientSecret: config.clientSecret,
         redirectUri: config.redirectUri,
@@ -60,11 +63,11 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
    * an access token, and a refresh token.
    * @throws An error if the request to validate the token fails.
    */
-  async validateToken(
+  async validateJwtToken(
     accessToken: string,
-  ): Promise<OAuthResult<ValidateTokenResponse>> {
+  ): Promise<ApiResponse<ValidateJwtResponse>> {
     try {
-      const res = await http.post(API_ENDPOINTS.VALIDATE_TOKEN, {
+      const res = await http.post(API_ENDPOINTS.VALIDATE_JWT_TOKEN, {
         accessToken,
       });
 
@@ -87,9 +90,11 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
    * The response data will contain the current user's email, first name, and last name.
    * @throws An error if the request to retrieve the user's information fails.
    */
-  async getCurrentUser(accessToken: string): Promise<OAuthResult<CurrentUser>> {
+  async lookupUserProfile(
+    accessToken: string,
+  ): Promise<ApiResponse<LookupUserProfileResponse>> {
     try {
-      const res = await http.get(API_ENDPOINTS.USER, {
+      const res = await http.get(API_ENDPOINTS.LOOKUP_USER_PROFILE, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -116,7 +121,7 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
    */
   async refreshToken(
     refreshToken: string,
-  ): Promise<OAuthResult<ValidateTokenResponse>> {
+  ): Promise<ApiResponse<RefreshTokenResponse>> {
     try {
       const res = await http.post(API_ENDPOINTS.REFRESH_TOKEN, {
         refreshToken,

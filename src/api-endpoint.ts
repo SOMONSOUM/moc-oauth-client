@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
-  LOGIN_TOKEN: "/api/v1/service-account/login-token",
-  USER: "/api/v1/service-account/profile-user",
+  GET_LOGIN_TOKEN: "/api/v1/service-account/login-token",
+  LOOKUP_USER_PROFILE: "/api/v1/service-account/lookup-user-profile",
   REFRESH_TOKEN: "/api/v1/service-account/refresh-token",
-  VALIDATE_TOKEN: "/api/v1/service-account/validate-jwt-token",
+  VALIDATE_JWT_TOKEN: "/api/v1/service-account/validate-jwt-token",
 };

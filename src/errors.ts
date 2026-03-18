@@ -1,8 +1,8 @@
 import { AxiosError } from "axios";
-import { OAuthError } from "./types";
+import { ApiErrorResponse } from "./types";
 
-export function handleError(error: unknown): OAuthError["error"] {
-  const err = error as AxiosError<OAuthError>;
+export function handleError(error: unknown): ApiErrorResponse["error"] {
+  const err = error as AxiosError<ApiErrorResponse>;
 
   if (err.response?.data?.error) {
     return {
