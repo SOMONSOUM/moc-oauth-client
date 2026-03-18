@@ -94,10 +94,8 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
     accessToken: string,
   ): Promise<ApiResponse<LookupUserProfileResponse>> {
     try {
-      const res = await http.get(API_ENDPOINTS.LOOKUP_USER_PROFILE, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+      const res = await http.post(API_ENDPOINTS.LOOKUP_USER_PROFILE, {
+        accessToken,
       });
 
       return {
