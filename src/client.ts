@@ -12,9 +12,7 @@ import { API_ENDPOINTS } from "./api-endpoint";
 
 interface MOCOAuthClientBase {
   getLoginToken(): Promise<ApiResponse<LoginTokenResponse>>;
-  validateJwtToken(
-    accessToken: string,
-  ): Promise<ApiResponse<ValidateJwtResponse>>;
+  validateJwt(jwt: string): Promise<ApiResponse<ValidateJwtResponse>>;
   lookupUserProfile(
     accessToken: string,
   ): Promise<ApiResponse<LookupUserProfileResponse>>;
@@ -57,18 +55,17 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
 
   /**
    * Validates a JWT token using the MOC OAuth API.
-   * @param accessToken The JWT token to validate.
+   * @param jwt The JWT token to validate.
    * @returns A promise resolving to an object containing the response data.
-   * The response data will contain a boolean indicating whether the token is valid or not,
-   * an access token, and a refresh token.
-   * @throws An error if the request to validate the token fails.
+   * The response data will contain the validation result of the JWT token.
+   * If the JWT token is valid, the response data will contain the payload of the JWT token.
+   * If the JWT token is invalid, the response data will contain an error.
+   * @throws An error if the request to validate the JWT token fails.
    */
-  async validateJwtToken(
-    accessToken: string,
-  ): Promise<ApiResponse<ValidateJwtResponse>> {
+  async validateJwt(jwt: string): Promise<ApiResponse<ValidateJwtResponse>> {
     try {
-      const res = await http.post(API_ENDPOINTS.VALIDATE_JWT_TOKEN, {
-        accessToken,
+      const res = await http.post(API_ENDPOINTS.VALIDATE_JWT, {
+        jwt,
       });
 
       return {

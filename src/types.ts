@@ -14,26 +14,33 @@ export interface ApiErrorResponse {
 
 /* ---------- RESPONSES ---------- */
 
-export interface LoginTokenResponse {
-  redirectUri: string;
-}
-
-export interface ValidateJwtResponse {
-  isValid: boolean;
-  payload: {
-    accessToken: string;
-    refreshToken: string;
-  };
-}
-
-export interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
 export interface LookupUserProfileResponse {
   id: number;
   email: string;
   username?: string;
   isActive: boolean;
+}
+
+export interface LoginTokenResponse {
+  redirectUri: string;
+}
+
+export interface ValidateJwtPayloadResponse {
+  accessToken: string;
+  refreshToken: string;
+  domain: string;
+  id: number;
+  email: string;
+  username?: string;
+  isActive: boolean;
+}
+
+export interface ValidateJwtResponse {
+  isValid: boolean;
+  payload: ValidateJwtPayloadResponse | null;
+}
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
 }
