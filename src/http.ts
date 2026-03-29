@@ -6,5 +6,6 @@ export const http = axios.create({
   headers: {
     "Content-Type": "application/json",
     "x-client-id": config.clientId,
+    "x-client-secret": config.clientSecret,
   },
 });

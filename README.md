@@ -66,7 +66,7 @@ console.log(result);
 ✅ Validate Access Token
 
 ```typescript
-const result = await oauth.validateToken(accessToken);
+const result = await oauth.validateAuthorizationCode(code);
 
 console.log(result);
 ```
@@ -78,7 +78,12 @@ console.log(result);
   "data": {
     "isValid": true,
     "accessToken": "...",
-    "refreshToken": "..."
+    "refreshToken": "...",
+    "domain": "...",
+    "id": "...",
+    "email": "...",
+    "username": "...",
+    "isActive": "..."
   },
   "error": null
 }
@@ -144,7 +149,7 @@ Example handling:
 
 ```typescript
 try {
-  await oauth.validateToken(token);
+  await oauth.validateAuthorizationCode(code);
 } catch (error) {
   console.error(error.error.message);
 }
