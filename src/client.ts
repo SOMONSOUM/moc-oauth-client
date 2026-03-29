@@ -2,7 +2,7 @@ import { http } from "./http";
 import { config } from "./config";
 import {
   LoginTokenResponse,
-  ValidateJwtResponse,
+  ValidateAuthorizationCodeResponse,
   LookupUserProfileResponse,
   ApiResponse,
   RefreshTokenResponse,
@@ -12,7 +12,9 @@ import { API_ENDPOINTS } from "./api-endpoint";
 
 interface MOCOAuthClientBase {
   getLoginToken(): Promise<ApiResponse<LoginTokenResponse>>;
-  validateJwt(jwt: string): Promise<ApiResponse<ValidateJwtResponse>>;
+  validateAuthorizationCode(
+    code: string,
+  ): Promise<ApiResponse<ValidateAuthorizationCodeResponse>>;
   lookupUserProfile(
     accessToken: string,
   ): Promise<ApiResponse<LookupUserProfileResponse>>;
@@ -54,18 +56,19 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
   }
 
   /**
-   * Validates a JWT token using the MOC OAuth API.
-   * @param jwt The JWT token to validate.
+   * Validates an authorization code using the MOC OAuth API.
+   * @param code The authorization code to validate.
    * @returns A promise resolving to an object containing the response data.
-   * The response data will contain the validation result of the JWT token.
-   * If the JWT token is valid, the response data will contain the payload of the JWT token.
-   * If the JWT token is invalid, the response data will contain an error.
-   * @throws An error if the request to validate the JWT token fails.
+   * The response data will contain information about whether the authorization code is valid,
+   * and an access token and refresh token if it is.
+   * @throws An error if the request to validate the authorization code fails.
    */
-  async validateJwt(jwt: string): Promise<ApiResponse<ValidateJwtResponse>> {
+  async validateAuthorizationCode(
+    code: string,
+  ): Promise<ApiResponse<ValidateAuthorizationCodeResponse>> {
     try {
-      const res = await http.post(API_ENDPOINTS.VALIDATE_JWT, {
-        jwt,
+      const res = await http.post(API_ENDPOINTS.VALIDATE_AUTHORIZATION_CODE, {
+        code,
       });
 
       return {

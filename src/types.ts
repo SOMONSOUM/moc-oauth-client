@@ -25,19 +25,19 @@ export interface LoginTokenResponse {
   redirectUri: string;
 }
 
-export interface ValidateJwtPayloadResponse {
-  accessToken: string;
-  refreshToken: string;
-  domain: string;
+export interface ValidateAuthorizationCodePayloadResponse {
   id: number;
   email: string;
   username?: string;
   isActive: boolean;
+  accessToken: string;
+  refreshToken: string;
+  domain: string;
 }
 
-export interface ValidateJwtResponse {
+export interface ValidateAuthorizationCodeResponse {
   isValid: boolean;
-  payload: ValidateJwtPayloadResponse | null;
+  payload: ValidateAuthorizationCodePayloadResponse | null;
 }
 
 export interface RefreshTokenResponse {
