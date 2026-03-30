@@ -4,4 +4,5 @@ export const API_ENDPOINTS = {
   REFRESH_TOKEN: "/api/v1/service-account/refresh-token",
   VALIDATE_AUTHORIZATION_CODE:
     "/api/v1/service-account/validate-authorization-code",
+  LOGOUT: "/api/v1/service-account/logout",
 };

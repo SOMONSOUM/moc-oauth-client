@@ -21,6 +21,7 @@ interface MOCOAuthClientBase {
   refreshToken(
     refreshToken: string,
   ): Promise<ApiResponse<RefreshTokenResponse>>;
+  logout(refreshToken: string): Promise<ApiResponse<boolean>>;
 }
 
 /**
@@ -122,6 +123,31 @@ export class MOCOAuthClient implements MOCOAuthClientBase {
   ): Promise<ApiResponse<RefreshTokenResponse>> {
     try {
       const res = await http.post(API_ENDPOINTS.REFRESH_TOKEN, {
+        refreshToken,
+      });
+
+      return {
+        data: res.data.data,
+        error: null,
+      };
+    } catch (e) {
+      return {
+        data: null,
+        error: handleError(e),
+      };
+    }
+  }
+
+  /**
+   * Logs out the current user's session using the MOC OAuth API.
+   * @param refreshToken The JWT token to use for authentication.
+   * @returns A promise resolving to an object containing the response data.
+   * The response data will contain a boolean indicating whether the logout was successful or not.
+   * @throws An error if the request to log out the current user's session fails.
+   */
+  async logout(refreshToken: string): Promise<ApiResponse<boolean>> {
+    try {
+      const res = await http.post(API_ENDPOINTS.LOGOUT, {
         refreshToken,
       });
 
